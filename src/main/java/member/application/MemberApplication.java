@@ -97,6 +97,7 @@ public class MemberApplication {
     }
 
     public boolean exit(String id){
+        ssss
         return false;
     }
 }
