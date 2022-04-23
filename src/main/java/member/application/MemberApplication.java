@@ -33,7 +33,7 @@ public class MemberApplication {
 
 
     }
-    public boolean signIn(String id, String password) {
+    public boolean signIn() {
 
         boolean isLogin = false;
         int loginCount = 0;
