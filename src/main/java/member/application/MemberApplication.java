@@ -23,16 +23,20 @@ public class MemberApplication {
         this.memberRepository = memberRepository;
     }
 
-
-    public boolean signUp(MemberDto memberDto){
-        if(memberDto.getId() != null) { // getId가 있으면 false 로 return
+    public boolean signUp(MemberDto memberDto) {
+        Member member = Member.createMember(
+                memberDto.getId(),
+                memberDto.getPassword(),
+                memberDto.getName(),
+                memberDto.getEmail()
+        );
+        if (member == null) {
             return false;
         }
 
-        return this.memberRepository.create(new Member(memberDto.getId(), memberDto.getPassword(),memberDto.getName(),memberDto.getEmail()));
-
-
+        return this.memberRepository.create(member);
     }
+
     public boolean signIn() {
 
         boolean isLogin = false;
@@ -48,10 +52,10 @@ public class MemberApplication {
             String inputID = "";
             String inputPW = "";
             System.out.print("ID       : ");
-            inputID =br.toString();
+            inputID = br.toString();
             System.out.print("PASSWORD : ");
             inputPW = br.toString();
-            isLogin = login(inputID,inputPW);
+            isLogin = login(inputID, inputPW);
             if (isLogin)
                 break;
 
@@ -66,40 +70,37 @@ public class MemberApplication {
         return isLogin;
     }
 
-    public boolean login(String id, String pw){
-        try{
-            for(int i=0; i<memberList.size(); i++){
-                if(memberList.get(i).getId().equals(id) ==false){
+    public boolean login(String id, String pw) {
+        try {
+            for (int i = 0; i < memberList.size(); i++) {
+                if (memberList.get(i).getId().equals(id) == false) {
                     continue;
-                }
-                else if(memberList.get(i).getId().equals(id)==true){
-                    if(memberList.get(i).getPassword().equals(pw) == false){
+                } else if (memberList.get(i).getId().equals(id) == true) {
+                    if (memberList.get(i).getPassword().equals(pw) == false) {
                         continue;
                     }
                 }
             }
-        }
-        catch(IllegalStateException e){
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
         System.out.println("회원정보가 일치하지 않습니다.");
         return false;
     }
 
-    public boolean logOut(String id){
-        if(id == null){
+    public boolean logOut(String id) {
+        if (id == null) {
             return false;
         }
         return true;
     }
 
-    public boolean read(String id){
-        if(memberList.isEmpty()){
+    public boolean read(String id) {
+        if (memberList.isEmpty()) {
             System.out.println("정보가 없습니다");
-        }
-        else{
-            for(int i = 0; i < memberList.size(); i++) {
-                if(memberList.get(i).getId().equals(id)==false){
+        } else {
+            for (int i = 0; i < memberList.size(); i++) {
+                if (memberList.get(i).getId().equals(id) == false) {
                     continue;
                 }
             }
@@ -107,8 +108,8 @@ public class MemberApplication {
         return read(id);
     }
 
-    public boolean update(Member name){
-        for(int i = 0; i < memberList.size(); i++) {
+    public boolean update(Member name) {
+        for (int i = 0; i < memberList.size(); i++) {
             if (memberList.get(i).equals(name) == false) {
                 continue;
             }
@@ -116,17 +117,16 @@ public class MemberApplication {
         return this.memberRepository.update(name);
     }
 
-    public void delete(int deleteNum){
-        if(!memberList.isEmpty()){
+    public void delete(int deleteNum) {
+        if (!memberList.isEmpty()) {
             memberList.remove(deleteNum);
             System.out.println("회원탈퇴가 완료되었습니다.");
-        }
-        else{
+        } else {
             System.out.println("탈퇴할 회원이 없습니다.");
         }
     }
 
-    public boolean exit(String id){
+    public boolean exit(String id) {
         System.exit(0);
         return false;
     }
