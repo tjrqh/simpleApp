@@ -12,23 +12,18 @@ import java.io.IOException;
 @SpringBootApplication
 public class StepOneApplication {
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException{
         MemberRepository memberRepository = new MemberInMemoryRepository();
         MemberApplication memberApplication = new MemberApplication(memberRepository);
         MemberCLIInterface memberCLIInterface = new MemberCLIInterface(memberApplication);
-        MemberDto memberDto = new MemberDto();
-        while(true){
-            switch (memberCLIInterface.memberMenu()) {
-                case memberCLIInterface.signUp:
-                    boolean create= memberApplication.signUp();
 
 
 
+        memberCLIInterface.memberMenu();
+        memberCLIInterface.choice();
             }
+
         }
 
 
-    }
-
-}
 

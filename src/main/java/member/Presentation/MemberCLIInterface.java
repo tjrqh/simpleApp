@@ -3,7 +3,7 @@ package member.Presentation;
 import member.application.MemberApplication;
 import member.application.MemberDto;
 import member.domain.entity.Member;
-import member.stepone.StepOneApplication;
+import member.infrastructure.MemberInMemoryRepository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,28 +15,32 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MemberCLIInterface {
-
+    MemberInMemoryRepository memberInMemoryRepository = new MemberInMemoryRepository();
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+
     public static final int signUp =1;
     public static final int signIn =2;
     public static final int logOut =3;
     public static final int read =4;
     public static final int update =5;
-    public static final int exit =6;
+    public static final int delete = 6;
+    public static final int exit =7;
 
 
-    public static List<String> fileLineRead(String name) throws IOException {
-        List<String> retStr = new ArrayList<String>();
-        BufferedReader in = new BufferedReader(new FileReader(name));
-        String s;
-        while ((s = in.readLine()) != null) {
-            retStr.add(s);
+
+        private ArrayList<Member> memberList;
+        Scanner sc = new Scanner(System.in);
+
+        public MemberCLIInterface() {
+            memberList = new ArrayList<Member>();
+            memberList.add(new Member("admin", "1234", "관리자","주소없음"));
         }
-        in.close();
-        return retStr;
-    }
+
+
 
     public int memberMenu() {
+
         Scanner sc = new Scanner(System.in);
         int memberMenu = 0;
         System.out.println("1. 회원가입");
@@ -44,7 +48,8 @@ public class MemberCLIInterface {
         System.out.println("3. 로그아웃");
         System.out.println("4. 회원정보");
         System.out.println("5. 정보수정");
-        System.out.println("6. 종료");
+        System.out.println("6. 회원탈퇴");
+        System.out.println("7. 종료");
 
         while(true){
             try{
@@ -63,6 +68,53 @@ public class MemberCLIInterface {
 
         return memberMenu;
     }
+
+    public boolean choice(){
+
+
+        Scanner sc = new Scanner(System.in);
+        while (true){
+            switch (memberMenu()){
+                case signUp:
+                    memberApplication.signUp(new MemberDto(sc.next(),sc.next(),sc.next(),sc.next()));
+                    break;
+
+                case signIn:
+                    memberApplication.signIn();
+                    break;
+
+                case logOut:
+                    memberApplication.logOut(sc.next());
+                    break;
+
+                case read:
+
+
+                    break;
+                case update:
+
+                    break;
+
+                case delete:
+                    memberApplication.delete(sc.nextInt());
+                    break;
+
+                case exit:
+                    exit();
+                    break;
+            }
+        }
+    }
+
+    public boolean memberEmpty(){
+            if(memberList.size() == 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+    }
+
 
     private MemberApplication memberApplication;
 
@@ -90,7 +142,7 @@ public class MemberCLIInterface {
         return false;
     }
 
-    public boolean exit(String id){
+    public boolean exit(){
         return false;
     }
 }
