@@ -1,5 +1,8 @@
 package member.domain.entity;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Member {
 
     private String id;
@@ -46,7 +49,13 @@ public class Member {
     public void setEmail(String email) {
         this.email = email;
     }
+    private ArrayList<Member> memberList;
+    Scanner sc = new Scanner(System.in);
 
+    public Member(){
+        memberList = new ArrayList<Member>();
+        memberList.add(new Member("admin", "1234", "관리자","주소없음"));
+    }
 
 
 

@@ -51,7 +51,7 @@ public class MemberApplication {
             inputID =br.toString();
             System.out.print("PASSWORD : ");
             inputPW = br.toString();
-            isLogin = signIn(inputID, inputPW);
+            isLogin = login(inputID,inputPW);
             if (isLogin)
                 break;
 
@@ -64,6 +64,26 @@ public class MemberApplication {
             }
         }
         return isLogin;
+    }
+
+    public boolean login(String id, String pw){
+        try{
+            for(int i=0; i<memberList.size(); i++){
+                if(memberList.get(i).getId().equals(id) ==false){
+                    continue;
+                }
+                else if(memberList.get(i).getId().equals(id)==true){
+                    if(memberList.get(i).getPassword().equals(pw) == false){
+                        continue;
+                    }
+                }
+            }
+        }
+        catch(IllegalStateException e){
+            e.printStackTrace();
+        }
+        System.out.println("회원정보가 일치하지 않습니다.");
+        return false;
     }
 
     public boolean logOut(String id){
@@ -96,8 +116,18 @@ public class MemberApplication {
         return this.memberRepository.update(name);
     }
 
-    public boolean exit(String id){
+    public void delete(int deleteNum){
+        if(!memberList.isEmpty()){
+            memberList.remove(deleteNum);
+            System.out.println("회원탈퇴가 완료되었습니다.");
+        }
+        else{
+            System.out.println("탈퇴할 회원이 없습니다.");
+        }
+    }
 
+    public boolean exit(String id){
+        System.exit(0);
         return false;
     }
 }
